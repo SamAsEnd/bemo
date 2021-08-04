@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-USERNAME="sam"
+SAM="sam"
 PASSWORD="<-- CHANGE-ME -->"
 TOKEN="<-- CHANGE-ME -->"
 
@@ -18,13 +18,13 @@ apt-get update
 timedatectl set-timezone "Africa/Addis_Ababa"
 
 # New user setup
-useradd -m -p `openssl passwd -crypt $PASSWORD` -s /bin/bash $USERNAME
-usermod -aG sudo $USERNAME
+useradd -m -p `openssl passwd -crypt $PASSWORD` -s /bin/bash $SAM
+usermod -aG sudo $SAM
 
 # Copy SSH access
-mkdir -p /home/$USERNAME/.ssh
-cp ~/.ssh/authorized_keys /home/$USERNAME/.ssh/
-chown -R $USERNAME:$USERNAME /home/$USERNAME/
+mkdir -p /home/$SAM/.ssh
+cp ~/.ssh/authorized_keys /home/$SAM/.ssh/
+chown -R $SAM:$SAM /home/$SAM/
 
 # Setup firewall
 ufw app list
@@ -43,7 +43,7 @@ ufw status
 
 cat > /etc/nginx/sites-available/default << EOF
 server {
-    root /home/$USERNAME/bemo/public;
+    root /home/$SAM/bemo/public;
     index index.php;
     server_name $HOSTNAME;
 
@@ -139,13 +139,13 @@ apt install --yes supervisor
 cat > /etc/supervisor/conf.d/laravel-worker.conf << EOF
 [program:laravel-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /home/$USERNAME/bemo/artisan queue:work --sleep=3 --tries=3
+command=php /home/$SAM/bemo/artisan queue:work --sleep=3 --tries=3
 autostart=true
 autorestart=true
-user=$USERNAME
+user=$SAM
 numprocs=8
 redirect_stderr=true
-stdout_logfile=/home/$USERNAME/app/worker/worker.log
+stdout_logfile=/home/$SAM/app/worker/worker.log
 stopwaitsecs=3600
 EOF
 
@@ -161,15 +161,15 @@ chmod +x composer.phar
 mv composer.phar /usr/local/bin/composer
 
 # Project
-cd /home/$USERNAME
+cd /home/$SAM
 mkdir -p bemo/public app/logs app/worker releases
 
-cat > /home/$USERNAME/app/.env << EOF
+cat > /home/$SAM/app/.env << EOF
 APP_KEY="<-- php artisan key:generate -->"
 APP_URL=https://$HOSTNAME
 
 DB_DATABASE=$DB_NAME
-DB_USERNAMENAME=$DB_USERNAME
+DB_USERNAME=$DB_USERNAME
 DB_PASSWORD=$DB_PASSWORD
 
 SESSION_COOKIE="__Host-bemo"
@@ -178,25 +178,25 @@ EOF
 
 echo "deploying" > bemo/public/index.php
 
-chown -R $USERNAME:$USERNAME bemo app releases bemo.git
+chown -R $SAM:$SAM bemo app releases bemo.git
 chmod -R 777 app
 systemctl restart nginx
 
-sudo -i -u $USERNAME bash << EOF
-    cd /home/$USERNAME
-    git clone --bare https://github.com/SamAsEnd/bemo.git /home/$USERNAME/bemo.git
+sudo -i -u $SAM bash << EOF
+    cd /home/$SAM
+    git clone --bare https://github.com/SamAsEnd/bemo.git /home/$SAM/bemo.git
 
     cd bemo.git
-    git worktree add /home/$USERNAME/deleteme master
-    mv /home/$USERNAME/deleteme /home/$USERNAME/delete
+    git worktree add /home/$SAM/deleteme master
+    mv /home/$SAM/deleteme /home/$SAM/delete
     git worktree prune
 
-    cd /home/$USERNAME/delete
+    cd /home/$SAM/delete
     composer install --no-dev
-    ln -nfs /home/$USERNAME/app/.env .env
+    ln -nfs /home/$SAM/app/.env .env
     php artisan key:generate --force
-    sed 's/$USERNAME@$HOSTNAME/127.0.0.1/g' Envoy.blade.php > /home/$USERNAME/Local.blade.php
-    cd /home/$USERNAME
+    sed 's/$SAM@$HOSTNAME/127.0.0.1/g' Envoy.blade.php > /home/$SAM/Local.blade.php
+    cd /home/$SAM
     rm -rf delete
 
     composer global require laravel/envoy

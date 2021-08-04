@@ -58,8 +58,8 @@
 
     rm -rf node_modules/
 
-    find ./public/js ./public/css ./public/fonts ./public/images -type f ! -name "*.gz" ! -name "*.br" -exec gzip   -f -r -k -9 {} \;
-    find ./public/js ./public/css ./public/fonts ./public/images -type f ! -name "*.gz" ! -name "*.br" -exec brotli -f    -k -Z {} \;
+    find ./public/js ./public/css -type f ! -name "*.gz" ! -name "*.br" -exec gzip   -f -r -k -9 {} \;
+    find ./public/js ./public/css -type f ! -name "*.gz" ! -name "*.br" -exec brotli -f    -k -Z {} \;
 @endtask
 
 @task('live', ['on' => 'production'])
