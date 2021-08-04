@@ -13,10 +13,13 @@ class ExportDbController extends Controller
     {
         $tmp = tempnam('/tmp', 'export-db');
 
+        $default = config('database.default');
+        $conf = config('database.connections.' . $default);
+
         MySql::create()
-            ->setDbName(env('DB_DATABASE'))
-            ->setUserName(env('DB_USERNAME'))
-            ->setPassword(env('DB_PASSWORD'))
+            ->setDbName($conf['database'])
+            ->setUserName($conf['username'])
+            ->setPassword($conf['password'])
             ->includeTables(['columns', 'cards'])
             ->dumpToFile($tmp);
 
