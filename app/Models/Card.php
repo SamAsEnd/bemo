@@ -23,6 +23,6 @@ class Card extends Model
     public function column()
     {
         return $this->belongsTo(Column::class)
-            ->orderBy('order,id');
+            ->orderBy('order');
     }
 }
