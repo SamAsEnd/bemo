@@ -7,6 +7,8 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import 'movement';
+
 .column_max {
   max-width: 360px !important;
 }

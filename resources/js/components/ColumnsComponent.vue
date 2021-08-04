@@ -46,19 +46,17 @@
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
 
-                                <div class="float-right">
-                                    <span class="btn btn-sm btn-light" v-show="index !== 0"
-                                          @click="moveCard(card, 'left')">&larr;</span>
-                                    <span class="btn btn-sm btn-light" v-show="index !== lastIndex"
-                                          @click="moveCard(card, 'right')">&rarr;</span>
-
-                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== 0"
+                                <div class="movement float-right">
+                                    <span class="movement__direction movement__direction--up" v-show="cardIndex !== 0"
                                           @click="moveCard(card, 'up')">&uarr;</span>
-                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1"
-                                          @click="moveCard(card, 'down')">&darr;</span>
-
-                                    <span class="btn btn-sm btn-outline-danger"
+                                    <span class="movement__direction movement__direction--left" v-show="index !== 0"
+                                          @click="moveCard(card, 'left')">&larr;</span>
+                                    <span class="movement__direction movement__direction--center"
                                           @click="deleteCard(column, card)">&times;</span>
+                                    <span class="movement__direction movement__direction--right" v-show="index !== lastIndex"
+                                          @click="moveCard(card, 'right')">&rarr;</span>
+                                    <span class="movement__direction movement__direction--down" v-show="cardIndex !== column.cards.length - 1"
+                                          @click="moveCard(card, 'down')">&darr;</span>
                                 </div>
                             </div>
 
@@ -208,7 +206,10 @@ export default {
                     return (column.cards[e.added.newIndex - 1].order + column.cards[e.added.newIndex + 1].order) / 2.0;
                 })();
 
-                axios.post('/columns/' + e.added.element.column_id + '/cards/' + e.added.element.id + '/set', {order: newOrder, column: column.id})
+                axios.post('/columns/' + e.added.element.column_id + '/cards/' + e.added.element.id + '/set', {
+                    order: newOrder,
+                    column: column.id
+                })
                     .then((res) => {
                         this.fetchData();
                     })

@@ -1990,8 +1990,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -41853,107 +41851,116 @@ var render = function() {
                                 _vm._v(_vm._s(card.title))
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "float-right" }, [
-                                _c(
-                                  "span",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: index !== 0,
-                                        expression: "index !== 0"
+                              _c(
+                                "div",
+                                { staticClass: "movement float-right" },
+                                [
+                                  _c(
+                                    "span",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: cardIndex !== 0,
+                                          expression: "cardIndex !== 0"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "movement__direction movement__direction--up",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.moveCard(card, "up")
+                                        }
                                       }
-                                    ],
-                                    staticClass: "btn btn-sm btn-light",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.moveCard(card, "left")
+                                    },
+                                    [_vm._v("↑")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: index !== 0,
+                                          expression: "index !== 0"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "movement__direction movement__direction--left",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.moveCard(card, "left")
+                                        }
                                       }
-                                    }
-                                  },
-                                  [_vm._v("←")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: index !== _vm.lastIndex,
-                                        expression: "index !== lastIndex"
+                                    },
+                                    [_vm._v("←")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass:
+                                        "movement__direction movement__direction--center",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteCard(column, card)
+                                        }
                                       }
-                                    ],
-                                    staticClass: "btn btn-sm btn-light",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.moveCard(card, "right")
+                                    },
+                                    [_vm._v("×")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: index !== _vm.lastIndex,
+                                          expression: "index !== lastIndex"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "movement__direction movement__direction--right",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.moveCard(card, "right")
+                                        }
                                       }
-                                    }
-                                  },
-                                  [_vm._v("→")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: cardIndex !== 0,
-                                        expression: "cardIndex !== 0"
+                                    },
+                                    [_vm._v("→")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value:
+                                            cardIndex !==
+                                            column.cards.length - 1,
+                                          expression:
+                                            "cardIndex !== column.cards.length - 1"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "movement__direction movement__direction--down",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.moveCard(card, "down")
+                                        }
                                       }
-                                    ],
-                                    staticClass: "btn btn-sm btn-light",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.moveCard(card, "up")
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("↑")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value:
-                                          cardIndex !== column.cards.length - 1,
-                                        expression:
-                                          "cardIndex !== column.cards.length - 1"
-                                      }
-                                    ],
-                                    staticClass: "btn btn-sm btn-light",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.moveCard(card, "down")
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("↓")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "btn btn-sm btn-outline-danger",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.deleteCard(column, card)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("×")]
-                                )
-                              ])
+                                    },
+                                    [_vm._v("↓")]
+                                  )
+                                ]
+                              )
                             ]
                           ),
                           _vm._v(" "),
