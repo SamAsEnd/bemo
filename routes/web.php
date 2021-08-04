@@ -14,6 +14,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::post('columns/{column}/set', [OrderController::class, 'setColumn']);
+    Route::post('columns/{column}/cards/{card}/set', [OrderController::class, 'setCard']);
+
     Route::post('columns/{column}/move/{direction}', [OrderController::class, 'column']);
     Route::post('columns/{column}/cards/{card}/move/{direction}', [OrderController::class, 'card']);
 

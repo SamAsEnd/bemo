@@ -1986,6 +1986,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2077,13 +2083,67 @@ __webpack_require__.r(__webpack_exports__);
         _this6.fetchData();
       });
     },
-    deleteCard: function deleteCard(column, card) {
+    moveCardDraggable: function moveCardDraggable(column, e) {
       var _this7 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
-        var index = _this7.columns.indexOf(column);
+      if (e.moved) {
+        var newOrder = function () {
+          if (e.moved.newIndex === 0) {
+            //first
+            try {
+              return column.cards[1].order - 10;
+            } catch (e) {
+              return 10;
+            }
+          }
 
-        var cards = _this7.columns[index].cards;
+          if (e.moved.newIndex === column.cards.length - 1) {
+            // last
+            return column.cards[column.cards.length - 2].order + 10;
+          }
+
+          return (column.cards[e.moved.newIndex - 1].order + column.cards[e.moved.newIndex + 1].order) / 2.0;
+        }();
+
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/columns/' + column.id + '/cards/' + e.moved.element.id + '/set', {
+          order: newOrder
+        }).then(function (res) {
+          _this7.fetchData();
+        });
+      } else if (e.added) {
+        var _newOrder = function () {
+          if (e.added.newIndex === 0) {
+            //first
+            try {
+              return column.cards[1].order - 10;
+            } catch (e) {
+              return 10;
+            }
+          }
+
+          if (e.added.newIndex === column.cards.length - 1) {
+            // last
+            return column.cards[column.cards.length - 2].order + 10;
+          }
+
+          return (column.cards[e.added.newIndex - 1].order + column.cards[e.added.newIndex + 1].order) / 2.0;
+        }();
+
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/columns/' + e.added.element.column_id + '/cards/' + e.added.element.id + '/set', {
+          order: _newOrder,
+          column: column.id
+        }).then(function (res) {
+          _this7.fetchData();
+        });
+      }
+    },
+    deleteCard: function deleteCard(column, card) {
+      var _this8 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
+        var index = _this8.columns.indexOf(column);
+
+        var cards = _this8.columns[index].cards;
         cards.splice(cards.indexOf(card), 1);
       });
     },
@@ -41644,7 +41704,7 @@ var render = function() {
         "draggable",
         {
           staticClass: "card-deck",
-          attrs: { tag: "div", group: "cards" },
+          attrs: { tag: "div", group: "columns" },
           on: { change: _vm.moveColumnDraggable },
           model: {
             value: _vm.columns,
@@ -41663,8 +41723,6 @@ var render = function() {
                 _vm._v(
                   "\n                " +
                     _vm._s(column.title) +
-                    " | " +
-                    _vm._s(column.order) +
                     "\n\n                "
                 ),
                 _c("div", { staticClass: "float-right" }, [
@@ -41725,31 +41783,50 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "list-group", attrs: { list: column.cards } },
-                  [
-                    _c(
-                      "p",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: column.cards.length === 0,
-                            expression: "column.cards.length === 0"
-                          }
-                        ],
-                        staticClass: "alert alert-warning"
+              _c(
+                "div",
+                { staticClass: "card-body" },
+                [
+                  _c(
+                    "p",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: column.cards.length === 0,
+                          expression: "column.cards.length === 0"
+                        }
+                      ],
+                      staticClass: "alert alert-warning",
+                      attrs: { slot: "header" },
+                      slot: "header"
+                    },
+                    [
+                      _vm._v(
+                        "\n                    No cards available.\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "draggable",
+                    {
+                      staticClass: "list-group",
+                      attrs: { tag: "div", group: "cards" },
+                      on: {
+                        change: function($event) {
+                          return _vm.moveCardDraggable(column, $event)
+                        }
                       },
-                      [
-                        _vm._v(
-                          "\n                        No cards available.\n                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
+                      model: {
+                        value: column.cards,
+                        callback: function($$v) {
+                          _vm.$set(column, "cards", $$v)
+                        },
+                        expression: "column.cards"
+                      }
+                    },
                     _vm._l(column.cards, function(card, cardIndex) {
                       return _c(
                         "div",
@@ -41879,11 +41956,12 @@ var render = function() {
                           ])
                         ]
                       )
-                    })
-                  ],
-                  2
-                )
-              ]),
+                    }),
+                    0
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "card-footer" }, [
                 _c(

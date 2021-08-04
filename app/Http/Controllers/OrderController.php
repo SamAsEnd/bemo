@@ -186,5 +186,25 @@ class OrderController extends Controller
         $column->save();
 
         $this->normalizeColumnOrder();
+
+        return response()->noContent();
+    }
+
+    /** Set arbitrary order from the request */
+    public function setCard(Column $column, Card $card)
+    {
+        $this->safeGuard($column, 'pass', ['pass']);
+
+        $card->order = request('order');
+
+        if (request()->has('column')) {
+            $card->column_id = request('column');
+        }
+
+        $card->save();
+
+        $this->normalizeCardOrder($card->column);
+
+        return response()->noContent();
     }
 }

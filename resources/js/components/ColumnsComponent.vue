@@ -21,35 +21,41 @@
             </p>
         </div>
 
-        <draggable tag="div" class="card-deck" v-model="columns" group="cards" @change="moveColumnDraggable">
+        <draggable tag="div" class="card-deck" v-model="columns" group="columns" @change="moveColumnDraggable">
             <div class="card column_max sortable-list" v-for="(column, index) in columns" :key="column.id">
                 <div class="card-header">
-                    {{ column.title }} | {{ column.order }}
+                    {{ column.title }}
 
                     <div class="float-right">
                         <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>
-                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveColumn(column, 'right')">&rarr;</span>
+                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex"
+                              @click="moveColumn(column, 'right')">&rarr;</span>
                         <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <div class="list-group" :list="column.cards">
-                        <p v-show="column.cards.length === 0" class="alert alert-warning">
-                            No cards available.
-                        </p>
+                    <p slot="header" v-show="column.cards.length === 0" class="alert alert-warning">
+                        No cards available.
+                    </p>
 
+                    <draggable tag="div" class="list-group" v-model="column.cards" group="cards"
+                               @change="moveCardDraggable(column, $event)">
                         <div v-for="(card, cardIndex) in column.cards" :key="card.id"
                              class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
 
                                 <div class="float-right">
-                                    <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveCard(card, 'left')">&larr;</span>
-                                    <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveCard(card, 'right')">&rarr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="index !== 0"
+                                          @click="moveCard(card, 'left')">&larr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="index !== lastIndex"
+                                          @click="moveCard(card, 'right')">&rarr;</span>
 
-                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== 0" @click="moveCard(card, 'up')">&uarr;</span>
-                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1" @click="moveCard(card, 'down')">&darr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== 0"
+                                          @click="moveCard(card, 'up')">&uarr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1"
+                                          @click="moveCard(card, 'down')">&darr;</span>
 
                                     <span class="btn btn-sm btn-outline-danger"
                                           @click="deleteCard(column, card)">&times;</span>
@@ -58,7 +64,7 @@
 
                             <p class="mb-1">{{ card.description }}</p>
                         </div>
-                    </div>
+                    </draggable>
                 </div>
 
                 <div class="card-footer">
@@ -148,13 +154,59 @@ export default {
                     return this.columns[this.lastIndex - 1].order + 10;
                 }
 
-                return (this.columns[newIndex-1].order + this.columns[newIndex+1].order) / 2.0;
+                return (this.columns[newIndex - 1].order + this.columns[newIndex + 1].order) / 2.0;
             })();
 
             axios.post('/columns/' + element.id + '/set', {order: newOrder})
                 .then((res) => {
                     this.fetchData();
                 })
+        },
+
+        moveCardDraggable(column, e) {
+            if (e.moved) {
+                let newOrder = (() => {
+                    if (e.moved.newIndex === 0) { //first
+                        try {
+                            return column.cards[1].order - 10;
+                        } catch (e) {
+                            return 10;
+                        }
+                    }
+
+                    if (e.moved.newIndex === column.cards.length - 1) { // last
+                        return column.cards[column.cards.length - 2].order + 10;
+                    }
+
+                    return (column.cards[e.moved.newIndex - 1].order + column.cards[e.moved.newIndex + 1].order) / 2.0;
+                })();
+
+                axios.post('/columns/' + column.id + '/cards/' + e.moved.element.id + '/set', {order: newOrder})
+                    .then((res) => {
+                        this.fetchData();
+                    })
+            } else if (e.added) {
+                let newOrder = (() => {
+                    if (e.added.newIndex === 0) { //first
+                        try {
+                            return column.cards[1].order - 10;
+                        } catch (e) {
+                            return 10;
+                        }
+                    }
+
+                    if (e.added.newIndex === column.cards.length - 1) { // last
+                        return column.cards[column.cards.length - 2].order + 10;
+                    }
+
+                    return (column.cards[e.added.newIndex - 1].order + column.cards[e.added.newIndex + 1].order) / 2.0;
+                })();
+
+                axios.post('/columns/' + e.added.element.column_id + '/cards/' + e.added.element.id + '/set', {order: newOrder, column: column.id})
+                    .then((res) => {
+                        this.fetchData();
+                    })
+            }
         },
 
         deleteCard(column, card) {
