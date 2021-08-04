@@ -2023,6 +2023,11 @@ __webpack_require__.r(__webpack_exports__);
         _this.columns = res.data;
       });
     },
+    addColumnEnter: function addColumnEnter(e) {
+      if (e.keyCode === 13) {
+        this.addColumn();
+      }
+    },
     addColumn: function addColumn() {
       var _this2 = this;
 
@@ -41643,6 +41648,7 @@ var render = function() {
                 attrs: { type: "text" },
                 domProps: { value: _vm.newColumn.title },
                 on: {
+                  keyup: _vm.addColumnEnter,
                   input: function($event) {
                     if ($event.target.composing) {
                       return

@@ -3,7 +3,7 @@
         <div class="row justify-content-center mb-4">
             <form @submit.prevent class="form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" v-model="newColumn.title">
+                    <input type="text" class="form-control" v-model="newColumn.title" @keyup="addColumnEnter">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button"
                                 @click.prevent="addColumn"
@@ -111,6 +111,12 @@ export default {
                 .then((res) => {
                     this.columns = res.data
                 })
+        },
+
+        addColumnEnter(e) {
+            if (e.keyCode === 13) {
+                this.addColumn()
+            }
         },
 
         addColumn() {
