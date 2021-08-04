@@ -155,7 +155,9 @@ class OrderController extends Controller
     private function cardHorizontalMovement(mixed $nextStepOrder, Card $card): void
     {
         /** @var Column $theNewColumn */
-        $theNewColumn = Column::query()->where('order', $nextStepOrder)->first();
+        $theNewColumn = Column::query()
+            ->where('user_id', auth()->id())
+            ->where('order', $nextStepOrder)->first();
 
         $card->column_id = $theNewColumn->id;
         $card->order = $theNewColumn->cards()->max('order') + 10; // add it below everything
