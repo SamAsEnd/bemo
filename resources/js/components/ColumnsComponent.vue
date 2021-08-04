@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center mb-4">
-            <form class="form-inline">
+            <form @submit.prevent class="form-inline">
                 <div class="input-group">
                     <input type="text" class="form-control" v-model="newColumn.title">
                     <div class="input-group-append">
@@ -12,11 +12,15 @@
         </div>
 
         <div class="card-deck">
-            <div class="card" v-for="column in columns" :key="column.id">
+            <div class="card" v-for="(column, index) in columns" :key="column.id">
                 <div class="card-header">
                     {{ column.title }}
 
-                    <span class="float-right btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>
+                    <div class="float-right">
+                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="move(column, 'left')">&larr;</span>
+                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="move(column, 'right')">&rarr;</span>
+                        <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>
+                    </div>
                 </div>
 
                 <div class="card-body">
@@ -25,10 +29,12 @@
                             No cards available.
                         </p>
 
-                        <div v-for="card in column.cards" :key="card.id" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div v-for="card in column.cards" :key="card.id"
+                             class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
-                                <span class="float-right btn btn-sm btn-outline-danger" @click="deleteCard(column, card)">&times;</span>
+                                <span class="float-right btn btn-sm btn-outline-danger"
+                                      @click="deleteCard(column, card)">&times;</span>
                             </div>
 
                             <p class="mb-1">{{ card.description }}</p>
@@ -37,7 +43,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <button class="btn btn-sm btn-info" @click="addCard(column)">Add Card</button>
+                    <button class="btn btn-sm btn-info" @click="addCard(column)">&plus; Add Card</button>
                 </div>
             </div>
         </div>
@@ -56,6 +62,12 @@ export default {
                 title: '',
             },
         }
+    },
+
+    computed: {
+        lastIndex() {
+            return this.columns.length - 1;
+        },
     },
 
     mounted() {
@@ -87,6 +99,13 @@ export default {
                 })
         },
 
+        move(column, direction) {
+            axios.post('/columns/' + column.id + '/move/' + direction)
+                .then((res) => {
+                    this.fetchData();
+                })
+        },
+
         deleteCard(column, card) {
             axios.delete('/columns/' + column.id + '/cards/' + card.id)
                 .then((res) => {
@@ -99,7 +118,7 @@ export default {
 
         addCard(column) {
             this.$modal.show(
-                AddCard, {column}, {}, {'added':this.cardAdded}
+                AddCard, {column}, {}, {'added': this.cardAdded}
             );
         },
 

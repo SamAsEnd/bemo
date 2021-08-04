@@ -1959,6 +1959,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -1969,6 +1975,11 @@ __webpack_require__.r(__webpack_exports__);
         title: ''
       }
     };
+  },
+  computed: {
+    lastIndex: function lastIndex() {
+      return this.columns.length - 1;
+    }
   },
   mounted: function mounted() {
     this.fetchData();
@@ -1999,13 +2010,20 @@ __webpack_require__.r(__webpack_exports__);
         _this3.columns.splice(_this3.columns.indexOf(column), 1);
       });
     },
-    deleteCard: function deleteCard(column, card) {
+    move: function move(column, direction) {
       var _this4 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
-        var index = _this4.columns.indexOf(column);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/columns/' + column.id + '/move/' + direction).then(function (res) {
+        _this4.fetchData();
+      });
+    },
+    deleteCard: function deleteCard(column, card) {
+      var _this5 = this;
 
-        var cards = _this4.columns[index].cards;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
+        var index = _this5.columns.indexOf(column);
+
+        var cards = _this5.columns[index].cards;
         cards.splice(cards.indexOf(card), 1);
       });
     },
@@ -37760,54 +37778,65 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row justify-content-center mb-4" }, [
-      _c("form", { staticClass: "form-inline" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newColumn.title,
-                expression: "newColumn.title"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.newColumn.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.newColumn, "title", $event.target.value)
-              }
+      _c(
+        "form",
+        {
+          staticClass: "form-inline",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
             }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group-append" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.addColumn.apply(null, arguments)
-                  }
+          }
+        },
+        [
+          _c("div", { staticClass: "input-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newColumn.title,
+                  expression: "newColumn.title"
                 }
-              },
-              [_vm._v("Add a Column")]
-            )
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.newColumn.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.newColumn, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.addColumn.apply(null, arguments)
+                    }
+                  }
+                },
+                [_vm._v("Add a Column")]
+              )
+            ])
           ])
-        ])
-      ])
+        ]
+      )
     ]),
     _vm._v(" "),
     _c(
       "div",
       { staticClass: "card-deck" },
-      _vm._l(_vm.columns, function(column) {
+      _vm._l(_vm.columns, function(column, index) {
         return _c("div", { key: column.id, staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _vm._v(
@@ -37815,18 +37844,62 @@ var render = function() {
                 _vm._s(column.title) +
                 "\n\n                "
             ),
-            _c(
-              "span",
-              {
-                staticClass: "float-right btn btn-sm btn-danger",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteColumn(column)
+            _c("div", { staticClass: "float-right" }, [
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: index !== 0,
+                      expression: "index !== 0"
+                    }
+                  ],
+                  staticClass: "btn btn-sm btn-light",
+                  on: {
+                    click: function($event) {
+                      return _vm.move(column, "left")
+                    }
                   }
-                }
-              },
-              [_vm._v("×")]
-            )
+                },
+                [_vm._v("←")]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: index !== _vm.lastIndex,
+                      expression: "index !== lastIndex"
+                    }
+                  ],
+                  staticClass: "btn btn-sm btn-light",
+                  on: {
+                    click: function($event) {
+                      return _vm.move(column, "right")
+                    }
+                  }
+                },
+                [_vm._v("→")]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass: "btn btn-sm btn-danger",
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteColumn(column)
+                    }
+                  }
+                },
+                [_vm._v("×")]
+              )
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
@@ -37909,7 +37982,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("Add Card")]
+              [_vm._v("+ Add Card")]
             )
           ])
         ])

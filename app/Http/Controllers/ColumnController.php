@@ -19,7 +19,10 @@ class ColumnController extends Controller
 
     public function store(ColumnRegisterRequest $request)
     {
-        $column = $request->user()->columns()->create($request->validated());
+        $data = $request->validated();
+        $data['order'] = $request->user()->columns()->max('order') + 10;
+
+        $column = $request->user()->columns()->create($data);
 
         return $column->load('cards');
     }

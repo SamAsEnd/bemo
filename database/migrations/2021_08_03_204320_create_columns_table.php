@@ -16,7 +16,7 @@ class CreateColumnsTable extends Migration
         Schema::create('columns', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedInteger('order')->default(PHP_INT_MAX);
+            $table->double('order')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });

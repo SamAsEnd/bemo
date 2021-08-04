@@ -12,7 +12,10 @@ class CardController extends Controller
     {
         abort_unless($column->user_id === auth()->id(), 401);
 
-        return $column->cards()->create($request->validated());
+        $data = $request->validated();
+        $data['order'] = $column->cards()->max('order') + 10;
+
+        return $column->cards()->create($data);
     }
 
     public function destroy(Column $column, Card $card)
