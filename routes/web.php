@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::post('columns/{column}/move/{direction}', [OrderController::class, 'column']);
+    Route::post('columns/{column}/cards/{card}/move/{direction}', [OrderController::class, 'card']);
 
     Route::resource('columns', ColumnController::class, ['only' => ['index', 'store', 'destroy']]);
     Route::resource('columns.cards', CardController::class, ['only' => ['store', 'destroy']]);

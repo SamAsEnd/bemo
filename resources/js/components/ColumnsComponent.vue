@@ -17,8 +17,8 @@
                     {{ column.title }}
 
                     <div class="float-right">
-                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="move(column, 'left')">&larr;</span>
-                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="move(column, 'right')">&rarr;</span>
+                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>
+                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveColumn(column, 'right')">&rarr;</span>
                         <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>
                     </div>
                 </div>
@@ -29,10 +29,16 @@
                             No cards available.
                         </p>
 
-                        <div v-for="card in column.cards" :key="card.id"
+                        <div v-for="(card, cardIndex) in column.cards" :key="card.id"
                              class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
+                                <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveCard(card, 'left')">&larr;</span>
+                                <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveCard(card, 'right')">&rarr;</span>
+
+                                <span class="btn btn-sm btn-light" v-show="cardIndex !== 0" @click="moveCard(card, 'up')">&uarr;</span>
+                                <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1" @click="moveCard(card, 'down')">&darr;</span>
+
                                 <span class="float-right btn btn-sm btn-outline-danger"
                                       @click="deleteCard(column, card)">&times;</span>
                             </div>
@@ -99,8 +105,15 @@ export default {
                 })
         },
 
-        move(column, direction) {
+        moveColumn(column, direction) {
             axios.post('/columns/' + column.id + '/move/' + direction)
+                .then((res) => {
+                    this.fetchData();
+                })
+        },
+
+        moveCard(card, direction) {
+            axios.post('/columns/' + card.column_id + '/cards/' + card.id + '/move/' + direction)
                 .then((res) => {
                     this.fetchData();
                 })

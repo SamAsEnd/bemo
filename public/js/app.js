@@ -1965,6 +1965,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2010,20 +2016,27 @@ __webpack_require__.r(__webpack_exports__);
         _this3.columns.splice(_this3.columns.indexOf(column), 1);
       });
     },
-    move: function move(column, direction) {
+    moveColumn: function moveColumn(column, direction) {
       var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/columns/' + column.id + '/move/' + direction).then(function (res) {
         _this4.fetchData();
       });
     },
-    deleteCard: function deleteCard(column, card) {
+    moveCard: function moveCard(card, direction) {
       var _this5 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
-        var index = _this5.columns.indexOf(column);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/columns/' + card.column_id + '/cards/' + card.id + '/move/' + direction).then(function (res) {
+        _this5.fetchData();
+      });
+    },
+    deleteCard: function deleteCard(column, card) {
+      var _this6 = this;
 
-        var cards = _this5.columns[index].cards;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().delete('/columns/' + column.id + '/cards/' + card.id).then(function (res) {
+        var index = _this6.columns.indexOf(column);
+
+        var cards = _this6.columns[index].cards;
         cards.splice(cards.indexOf(card), 1);
       });
     },
@@ -37859,7 +37872,7 @@ var render = function() {
                   staticClass: "btn btn-sm btn-light",
                   on: {
                     click: function($event) {
-                      return _vm.move(column, "left")
+                      return _vm.moveColumn(column, "left")
                     }
                   }
                 },
@@ -37880,7 +37893,7 @@ var render = function() {
                   staticClass: "btn btn-sm btn-light",
                   on: {
                     click: function($event) {
-                      return _vm.move(column, "right")
+                      return _vm.moveColumn(column, "right")
                     }
                   }
                 },
@@ -37927,7 +37940,7 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._l(column.cards, function(card) {
+                _vm._l(column.cards, function(card, cardIndex) {
                   return _c(
                     "div",
                     {
@@ -37943,6 +37956,91 @@ var render = function() {
                           _c("h5", { staticClass: "mb-1" }, [
                             _vm._v(_vm._s(card.title))
                           ]),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: index !== 0,
+                                  expression: "index !== 0"
+                                }
+                              ],
+                              staticClass: "btn btn-sm btn-light",
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveCard(card, "left")
+                                }
+                              }
+                            },
+                            [_vm._v("←")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: index !== _vm.lastIndex,
+                                  expression: "index !== lastIndex"
+                                }
+                              ],
+                              staticClass: "btn btn-sm btn-light",
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveCard(card, "right")
+                                }
+                              }
+                            },
+                            [_vm._v("→")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: cardIndex !== 0,
+                                  expression: "cardIndex !== 0"
+                                }
+                              ],
+                              staticClass: "btn btn-sm btn-light",
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveCard(card, "up")
+                                }
+                              }
+                            },
+                            [_vm._v("↑")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: cardIndex !== column.cards.length - 1,
+                                  expression:
+                                    "cardIndex !== column.cards.length - 1"
+                                }
+                              ],
+                              staticClass: "btn btn-sm btn-light",
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveCard(card, "down")
+                                }
+                              }
+                            },
+                            [_vm._v("↓")]
+                          ),
                           _vm._v(" "),
                           _c(
                             "span",
