@@ -10002,3 +10002,6 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.column_max {
+  max-width: 360px !important;
+}

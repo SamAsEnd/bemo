@@ -1971,6 +1971,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -37830,7 +37840,10 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
+                  attrs: {
+                    type: "button",
+                    disabled: _vm.newColumn.title.trim().length === 0
+                  },
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -37838,7 +37851,11 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Add a Column")]
+                [
+                  _vm._v(
+                    "\n                        + Add a Column\n                    "
+                  )
+                ]
               )
             ])
           ])
@@ -37848,9 +37865,29 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.columns.length === 0,
+            expression: "columns.length === 0"
+          }
+        ],
+        staticClass: "row justify-content-center mb-4"
+      },
+      [
+        _c("p", { staticClass: "alert alert-warning" }, [
+          _vm._v("\n            No column available.\n        ")
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
       { staticClass: "card-deck" },
       _vm._l(_vm.columns, function(column, index) {
-        return _c("div", { key: column.id, staticClass: "card" }, [
+        return _c("div", { key: column.id, staticClass: "card column_max" }, [
           _c("div", { staticClass: "card-header" }, [
             _vm._v(
               "\n                " +

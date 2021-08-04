@@ -5,14 +5,24 @@
                 <div class="input-group">
                     <input type="text" class="form-control" v-model="newColumn.title">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" @click.prevent="addColumn">Add a Column</button>
+                        <button class="btn btn-primary" type="button"
+                                @click.prevent="addColumn"
+                                :disabled="newColumn.title.trim().length === 0">
+                            &plus; Add a Column
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
 
+        <div v-show="columns.length === 0" class="row justify-content-center mb-4">
+            <p class="alert alert-warning">
+                No column available.
+            </p>
+        </div>
+
         <div class="card-deck">
-            <div class="card" v-for="(column, index) in columns" :key="column.id">
+            <div class="card column_max" v-for="(column, index) in columns" :key="column.id">
                 <div class="card-header">
                     {{ column.title }}
 
