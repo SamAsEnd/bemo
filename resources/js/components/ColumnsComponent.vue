@@ -42,7 +42,8 @@
                     <draggable tag="div" class="list-group" v-model="column.cards" group="cards"
                                @change="moveCardDraggable(column, $event)">
                         <div v-for="(card, cardIndex) in column.cards" :key="card.id"
-                             class="list-group-item list-group-item-action flex-column align-items-start">
+                             class="list-group-item list-group-item-action flex-column align-items-start"
+                             @click="showCard(card)">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
 
@@ -78,6 +79,7 @@ import axios from 'axios';
 import draggable from "vuedraggable";
 
 import AddCard from './AddCardComponent';
+import UpdateCard from './UpdateCardComponent';
 
 export default {
     components: {
@@ -235,6 +237,12 @@ export default {
         cardAdded(column, card) {
             let index = this.columns.indexOf(column);
             this.columns[index].cards.push(card)
+        },
+
+        showCard(card) {
+            this.$modal.show(
+                UpdateCard, {_card:card}, {}, {}
+            );
         }
     }
 }

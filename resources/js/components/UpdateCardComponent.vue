@@ -9,8 +9,8 @@
             <textarea id="description" class="form-control" v-model="card.description"></textarea>
         </div>
         <div class="form-group">
-            <button class="btn btn-outline-primary" @click.prevent="addCard">
-                Add card
+            <button class="btn btn-outline-success" @click.prevent="updateCard">
+                &circlearrowleft; Update card
             </button>
         </div>
     </form>
@@ -20,23 +20,20 @@
 import axios from 'axios';
 
 export default {
-    props: ['column'],
+    props: ['_card'],
 
     data() {
         return {
-            card: {
-                title: '',
-                description: '',
-                column_id: this.column.id,
-            },
+            card: {...this._card},
         }
     },
 
     methods: {
-        addCard() {
-            axios.post('/columns/' + this.card.column_id + '/cards', this.card)
+        updateCard() {
+            axios.patch('/columns/' + this.card.column_id + '/cards/' + this.card.id, this.card)
                 .then((res) => {
-                    this.$parent.$emit('added', this.column, res.data);
+                    this._card.title = res.data.title;
+                    this._card.description = res.data.description;
                     this.$emit('close');
                 })
         },

@@ -20,5 +20,5 @@ Route::middleware('auth')->group(function () {
     Route::post('columns/{column}/cards/{card}/move/{direction}', [OrderController::class, 'card']);
 
     Route::resource('columns', ColumnController::class, ['only' => ['index', 'store', 'destroy']]);
-    Route::resource('columns.cards', CardController::class, ['only' => ['store', 'destroy']]);
+    Route::resource('columns.cards', CardController::class, ['only' => ['store', 'update', 'destroy']]);
 });
