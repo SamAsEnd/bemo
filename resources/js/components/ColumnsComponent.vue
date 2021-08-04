@@ -21,10 +21,10 @@
             </p>
         </div>
 
-        <div class="card-deck">
-            <div class="card column_max" v-for="(column, index) in columns" :key="column.id">
+        <draggable tag="div" class="card-deck" v-model="columns" group="cards" @change="moveColumnDraggable">
+            <div class="card column_max sortable-list" v-for="(column, index) in columns" :key="column.id">
                 <div class="card-header">
-                    {{ column.title }}
+                    {{ column.title }} | {{ column.order }}
 
                     <div class="float-right">
                         <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="list-group">
+                    <div class="list-group" :list="column.cards">
                         <p v-show="column.cards.length === 0" class="alert alert-warning">
                             No cards available.
                         </p>
@@ -43,14 +43,17 @@
                              class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ card.title }}</h5>
-                                <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveCard(card, 'left')">&larr;</span>
-                                <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveCard(card, 'right')">&rarr;</span>
 
-                                <span class="btn btn-sm btn-light" v-show="cardIndex !== 0" @click="moveCard(card, 'up')">&uarr;</span>
-                                <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1" @click="moveCard(card, 'down')">&darr;</span>
+                                <div class="float-right">
+                                    <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveCard(card, 'left')">&larr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="index !== lastIndex" @click="moveCard(card, 'right')">&rarr;</span>
 
-                                <span class="float-right btn btn-sm btn-outline-danger"
-                                      @click="deleteCard(column, card)">&times;</span>
+                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== 0" @click="moveCard(card, 'up')">&uarr;</span>
+                                    <span class="btn btn-sm btn-light" v-show="cardIndex !== column.cards.length - 1" @click="moveCard(card, 'down')">&darr;</span>
+
+                                    <span class="btn btn-sm btn-outline-danger"
+                                          @click="deleteCard(column, card)">&times;</span>
+                                </div>
                             </div>
 
                             <p class="mb-1">{{ card.description }}</p>
@@ -62,15 +65,21 @@
                     <button class="btn btn-sm btn-info" @click="addCard(column)">&plus; Add Card</button>
                 </div>
             </div>
-        </div>
+        </draggable>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import draggable from "vuedraggable";
+
 import AddCard from './AddCardComponent';
 
 export default {
+    components: {
+        draggable
+    },
+
     data() {
         return {
             columns: [],
@@ -124,6 +133,25 @@ export default {
 
         moveCard(card, direction) {
             axios.post('/columns/' + card.column_id + '/cards/' + card.id + '/move/' + direction)
+                .then((res) => {
+                    this.fetchData();
+                })
+        },
+
+        moveColumnDraggable({moved: {element, newIndex, oldIndex}}) {
+            let newOrder = (() => {
+                if (newIndex === 0) { //first
+                    return this.columns[1].order - 10;
+                }
+
+                if (newIndex === this.lastIndex) { // last
+                    return this.columns[this.lastIndex - 1].order + 10;
+                }
+
+                return (this.columns[newIndex-1].order + this.columns[newIndex+1].order) / 2.0;
+            })();
+
+            axios.post('/columns/' + element.id + '/set', {order: newOrder})
                 .then((res) => {
                     this.fetchData();
                 })

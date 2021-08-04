@@ -176,4 +176,15 @@ class OrderController extends Controller
                 'order' => DB::raw('(@rownum := 10 + @rownum)'),
             ]);
     }
+
+    /** Set arbitrary order from the request */
+    public function setColumn(Column $column)
+    {
+        $this->safeGuard($column, 'pass', ['pass']);
+
+        $column->order = request('order');
+        $column->save();
+
+        $this->normalizeColumnOrder();
+    }
 }
