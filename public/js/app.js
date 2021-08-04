@@ -2017,11 +2017,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.columns = res.data;
       });
     },
-    addColumnEnter: function addColumnEnter(e) {
-      if (e.keyCode === 13) {
-        this.addColumn();
-      }
-    },
     addColumn: function addColumn() {
       var _this2 = this;
 
@@ -41780,7 +41775,15 @@ var render = function() {
                 attrs: { type: "text" },
                 domProps: { value: _vm.newColumn.title },
                 on: {
-                  keyup: _vm.addColumnEnter,
+                  keyup: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.addColumn.apply(null, arguments)
+                  },
                   input: function($event) {
                     if ($event.target.composing) {
                       return
@@ -42009,6 +42012,7 @@ var render = function() {
                                         "movement__direction movement__direction--up",
                                       on: {
                                         click: function($event) {
+                                          $event.stopPropagation()
                                           return _vm.moveCard(card, "up")
                                         }
                                       }
@@ -42031,6 +42035,7 @@ var render = function() {
                                         "movement__direction movement__direction--left",
                                       on: {
                                         click: function($event) {
+                                          $event.stopPropagation()
                                           return _vm.moveCard(card, "left")
                                         }
                                       }
@@ -42045,6 +42050,7 @@ var render = function() {
                                         "movement__direction movement__direction--center",
                                       on: {
                                         click: function($event) {
+                                          $event.stopPropagation()
                                           return _vm.deleteCard(column, card)
                                         }
                                       }
@@ -42067,6 +42073,7 @@ var render = function() {
                                         "movement__direction movement__direction--right",
                                       on: {
                                         click: function($event) {
+                                          $event.stopPropagation()
                                           return _vm.moveCard(card, "right")
                                         }
                                       }
@@ -42092,6 +42099,7 @@ var render = function() {
                                         "movement__direction movement__direction--down",
                                       on: {
                                         click: function($event) {
+                                          $event.stopPropagation()
                                           return _vm.moveCard(card, "down")
                                         }
                                       }

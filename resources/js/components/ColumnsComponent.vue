@@ -3,7 +3,7 @@
         <div class="row justify-content-center mb-4">
             <form @submit.prevent class="form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" v-model="newColumn.title" @keyup="addColumnEnter">
+                    <input type="text" class="form-control" v-model="newColumn.title" @keyup.enter="addColumn">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button"
                                 @click.prevent="addColumn"
@@ -49,15 +49,15 @@
 
                                 <div class="movement float-right">
                                     <span class="movement__direction movement__direction--up" v-show="cardIndex !== 0"
-                                          @click="moveCard(card, 'up')">&uarr;</span>
+                                          @click.stop="moveCard(card, 'up')">&uarr;</span>
                                     <span class="movement__direction movement__direction--left" v-show="index !== 0"
-                                          @click="moveCard(card, 'left')">&larr;</span>
+                                          @click.stop="moveCard(card, 'left')">&larr;</span>
                                     <span class="movement__direction movement__direction--center"
-                                          @click="deleteCard(column, card)">&times;</span>
+                                          @click.stop="deleteCard(column, card)">&times;</span>
                                     <span class="movement__direction movement__direction--right" v-show="index !== lastIndex"
-                                          @click="moveCard(card, 'right')">&rarr;</span>
+                                          @click.stop="moveCard(card, 'right')">&rarr;</span>
                                     <span class="movement__direction movement__direction--down" v-show="cardIndex !== column.cards.length - 1"
-                                          @click="moveCard(card, 'down')">&darr;</span>
+                                          @click.stop="moveCard(card, 'down')">&darr;</span>
                                 </div>
                             </div>
 
@@ -111,12 +111,6 @@ export default {
                 .then((res) => {
                     this.columns = res.data
                 })
-        },
-
-        addColumnEnter(e) {
-            if (e.keyCode === 13) {
-                this.addColumn()
-            }
         },
 
         addColumn() {
