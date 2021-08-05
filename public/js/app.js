@@ -2066,8 +2066,13 @@ __webpack_require__.r(__webpack_exports__);
       newColumn: {
         title: ''
       },
-      joystick: false
+      joystick: JSON.parse(localStorage.getItem('joystick') || "false")
     };
+  },
+  watch: {
+    joystick: function joystick(value) {
+      localStorage.setItem('joystick', JSON.stringify(value));
+    }
   },
   computed: {
     lastIndex: function lastIndex() {

@@ -157,7 +157,13 @@ export default {
             newColumn: {
                 title: '',
             },
-            joystick: false
+            joystick: JSON.parse(localStorage.getItem('joystick') || "false")
+        }
+    },
+
+    watch: {
+        joystick(value) {
+            localStorage.setItem('joystick', JSON.stringify(value))
         }
     },
 
