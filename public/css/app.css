@@ -229,11 +229,6 @@ body {
   border: 1px solid #aaaaaa;
   border-radius: 6px;
   max-width: 480px;
-  transition: all 0.2s;
-}
-.columns .column:hover {
-  background-color: #749393;
-  transform: rotate(0.3deg) scale(1.03);
 }
 .columns .column__title {
   padding: 0.5em;
@@ -257,11 +252,6 @@ body {
   margin: 0.25em 0.1em;
   border: 1px solid #465A5A;
   background-color: white;
-  transition: transform 0.2s;
-}
-.cards .card:hover {
-  transform: rotate(1deg) scale(1.05);
-  z-index: 999;
 }
 .cards .card:first-child {
   border-top-left-radius: 7px;
