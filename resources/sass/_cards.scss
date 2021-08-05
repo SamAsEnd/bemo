@@ -21,6 +21,16 @@
     &__title {
       padding: .5em;
       color: $primary;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+    }
+
+    &__buttons {
+      min-width: 48px;
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
     }
 
     &__description {

@@ -1985,6 +1985,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1998,7 +2065,8 @@ __webpack_require__.r(__webpack_exports__);
       columns: [],
       newColumn: {
         title: ''
-      }
+      },
+      joystick: false
     };
   },
   computed: {
@@ -41800,7 +41868,48 @@ var render = function() {
                     _vm.$set(_vm.newColumn, "title", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "input__help" }, [
+                _vm._v("\n                    Use joystick: "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.joystick,
+                      expression: "joystick"
+                    }
+                  ],
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(_vm.joystick)
+                      ? _vm._i(_vm.joystick, null) > -1
+                      : _vm.joystick
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.joystick,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.joystick = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.joystick = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.joystick = $$c
+                      }
+                    }
+                  }
+                })
+              ])
             ])
           ]
         ),
@@ -41847,6 +41956,124 @@ var render = function() {
             [
               _c("div", { staticClass: "column__title" }, [
                 _c("h3", [_vm._v(_vm._s(column.title))]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.joystick,
+                        expression: "joystick"
+                      }
+                    ],
+                    staticClass: "column__buttons"
+                  },
+                  [
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: index !== 0,
+                            expression: "index !== 0"
+                          }
+                        ],
+                        staticClass: "btn btn-sm btn-light",
+                        on: {
+                          click: function($event) {
+                            return _vm.moveColumn(column, "left")
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "white",
+                              "stroke-width": "2.5",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("circle", {
+                              attrs: { cx: "12", cy: "12", r: "10" }
+                            }),
+                            _vm._v(" "),
+                            _c("polyline", {
+                              attrs: { points: "12 8 8 12 12 16" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "16", y1: "12", x2: "8", y2: "12" }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: index !== _vm.lastIndex,
+                            expression: "index !== lastIndex"
+                          }
+                        ],
+                        staticClass: "btn btn-sm btn-light",
+                        on: {
+                          click: function($event) {
+                            return _vm.moveColumn(column, "right")
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "24",
+                              height: "24",
+                              viewBox: "0 0 24 24",
+                              fill: "none",
+                              stroke: "white",
+                              "stroke-width": "2.5",
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round"
+                            }
+                          },
+                          [
+                            _c("circle", {
+                              attrs: { cx: "12", cy: "12", r: "10" }
+                            }),
+                            _vm._v(" "),
+                            _c("polyline", {
+                              attrs: { points: "12 16 16 12 12 8" }
+                            }),
+                            _vm._v(" "),
+                            _c("line", {
+                              attrs: { x1: "8", y1: "12", x2: "16", y2: "12" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "column__buttons" }, [
                   _c(
@@ -41979,7 +42206,255 @@ var render = function() {
                     },
                     [
                       _c("div", { staticClass: "card__title" }, [
-                        _c("h4", [_vm._v(_vm._s(card.title))])
+                        _c("h4", [_vm._v(_vm._s(card.title))]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card__buttons" }, [
+                          _c("div", { staticClass: "movement" }, [
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.joystick && cardIndex !== 0,
+                                    expression: "joystick && cardIndex !== 0"
+                                  }
+                                ],
+                                staticClass:
+                                  "movement__direction movement__direction--up",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.moveCard(card, "up")
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      width: "16",
+                                      height: "16",
+                                      viewBox: "0 0 24 24",
+                                      fill: "none",
+                                      stroke: "#465A5A",
+                                      "stroke-width": "2.5",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round"
+                                    }
+                                  },
+                                  [
+                                    _c("polyline", {
+                                      attrs: { points: "18 15 12 9 6 15" }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.joystick && index !== 0,
+                                    expression: "joystick && index !== 0"
+                                  }
+                                ],
+                                staticClass:
+                                  "movement__direction movement__direction--left",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.moveCard(card, "left")
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      width: "16",
+                                      height: "16",
+                                      viewBox: "0 0 24 24",
+                                      fill: "none",
+                                      stroke: "#465A5A",
+                                      "stroke-width": "2.5",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round"
+                                    }
+                                  },
+                                  [
+                                    _c("polyline", {
+                                      attrs: { points: "15 18 9 12 15 6" }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "movement__direction",
+                                class: [
+                                  _vm.joystick
+                                    ? "movement__direction--center"
+                                    : "movement__direction--topright"
+                                ],
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.deleteCard(column, card)
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      width: "16",
+                                      height: "16",
+                                      viewBox: "0 0 24 24",
+                                      fill: "none",
+                                      stroke: "#ff4040",
+                                      "stroke-width": "2",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round"
+                                    }
+                                  },
+                                  [
+                                    _c("circle", {
+                                      attrs: { cx: "12", cy: "12", r: "10" }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("line", {
+                                      attrs: {
+                                        x1: "15",
+                                        y1: "9",
+                                        x2: "9",
+                                        y2: "15"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("line", {
+                                      attrs: {
+                                        x1: "9",
+                                        y1: "9",
+                                        x2: "15",
+                                        y2: "15"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      _vm.joystick && index !== _vm.lastIndex,
+                                    expression:
+                                      "joystick && index !== lastIndex"
+                                  }
+                                ],
+                                staticClass:
+                                  "movement__direction movement__direction--right",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.moveCard(card, "right")
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      width: "16",
+                                      height: "16",
+                                      viewBox: "0 0 24 24",
+                                      fill: "none",
+                                      stroke: "#465A5A",
+                                      "stroke-width": "2.5",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round"
+                                    }
+                                  },
+                                  [
+                                    _c("polyline", {
+                                      attrs: { points: "9 18 15 12 9 6" }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      _vm.joystick &&
+                                      cardIndex !== column.cards.length - 1,
+                                    expression:
+                                      "joystick && cardIndex !== column.cards.length - 1"
+                                  }
+                                ],
+                                staticClass:
+                                  "movement__direction movement__direction--down",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.moveCard(card, "down")
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      width: "16",
+                                      height: "16",
+                                      viewBox: "0 0 24 24",
+                                      fill: "none",
+                                      stroke: "#465A5A",
+                                      "stroke-width": "2.5",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round"
+                                    }
+                                  },
+                                  [
+                                    _c("polyline", {
+                                      attrs: { points: "6 9 12 15 18 9" }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ])
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("p", { staticClass: "card__description" }, [

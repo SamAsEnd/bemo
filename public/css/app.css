@@ -149,6 +149,13 @@ body {
   font-size: 12px;
   font-style: italic;
 }
+.input__help {
+  margin: 2px 0;
+  color: #465A5A;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+}
 
 .button {
   cursor: pointer;
@@ -257,6 +264,15 @@ body {
 .cards .card__title {
   padding: 0.5em;
   color: #465A5A;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.cards .card__buttons {
+  min-width: 48px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 .cards .card__description {
   font-style: italic;
@@ -267,4 +283,37 @@ body {
 
 .modal {
   margin: 1em;
+}
+
+.movement {
+  display: grid;
+  grid-template: "  .    up  topright" "left center right " "  .   down    .   ";
+  max-width: 48px;
+  max-height: 48px;
+}
+.movement__direction {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  max-width: 16px;
+  max-height: 16px;
+}
+.movement__direction--up {
+  grid-area: up;
+}
+.movement__direction--left {
+  grid-area: left;
+}
+.movement__direction--right {
+  grid-area: right;
+}
+.movement__direction--down {
+  grid-area: down;
+}
+.movement__direction--center {
+  grid-area: center;
+}
+.movement__direction--topright {
+  grid-area: topright;
 }

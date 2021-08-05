@@ -2,28 +2,19 @@
 .movement {
   display: grid;
   grid-template:
-    "  .    up     .  "
-    "left center right"
-    "  .   down    .  ";
+    "  .    up  topright"
+    "left center right "
+    "  .   down    .   ";
+  max-width: 16px * 3;
+  max-height: 16px * 3;
 
   &__direction {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
-    background-color: #DDD;
-    //box-shadow: 1px 1px 1px black;
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    min-height: 20px;
-    max-width: 20px;
-    max-height: 20px;
-
-    &:hover {
-      background-color: lighten(#DDD, 10);
-    }
+    max-width: 16px;
+    max-height: 16px;
 
     &--up {
       grid-area: up;
@@ -43,12 +34,10 @@
 
     &--center {
       grid-area: center;
-      color: white;
-      background-color: red;
+    }
 
-      &:hover {
-        background-color: lighten(red, 10);
-      }
+    &--topright {
+      grid-area: topright;
     }
   }
 }

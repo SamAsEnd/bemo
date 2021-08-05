@@ -6,6 +6,10 @@
                     <input type="text" class="input__control input__control--large" v-model="newColumn.title"
                            @keyup.enter="addColumn"
                            placeholder="New Column Title">
+
+                    <div class="input__help">
+                        Use joystick: <input type="checkbox" v-model="joystick" />
+                    </div>
                 </div>
             </form>
 
@@ -19,21 +23,45 @@
                 <div class="column__title">
                     <h3>{{ column.title }}</h3>
 
-                    <!--                    <div class="float-right">-->
-                    <!--                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>-->
-                    <!--                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex"-->
-                    <!--                              @click="moveColumn(column, 'right')">&rarr;</span>-->
-                    <!--                        <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>-->
-                    <!--                    </div>-->
+                    <div v-show="joystick" class="column__buttons">
+                        <span class="btn btn-sm btn-light" v-show="index !== 0"
+                              @click="moveColumn(column, 'left')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 8 8 12 12 16"></polyline>
+                                <line x1="16" y1="12" x2="8" y2="12"></line>
+                            </svg>
+                        </span>
+
+                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex"
+                              @click="moveColumn(column, 'right')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 16 16 12 12 8"></polyline>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </span>
+                    </div>
+
                     <div class="column__buttons">
                         <span @click="addCard(column)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="lightgreen" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="lightgreen" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line
+                                x1="8" y1="12" x2="16" y2="12"></line>
                             </svg>
                         </span>
                         <span @click="deleteColumn(column)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="#ff4040" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line
+                                x1="9" y1="9" x2="15" y2="15"></line>
                             </svg>
                         </span>
                     </div>
@@ -50,18 +78,57 @@
                         <div class="card__title">
                             <h4>{{ card.title }}</h4>
 
-                            <!--                                <div class="movement float-right">-->
-                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;up" v-show="cardIndex !== 0"-->
-                            <!--                                          @click.stop="moveCard(card, 'up')">&uarr;</span>-->
-                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;left" v-show="index !== 0"-->
-                            <!--                                          @click.stop="moveCard(card, 'left')">&larr;</span>-->
-                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;center"-->
-                            <!--                                          @click.stop="deleteCard(column, card)">&times;</span>-->
-                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;right" v-show="index !== lastIndex"-->
-                            <!--                                          @click.stop="moveCard(card, 'right')">&rarr;</span>-->
-                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;down" v-show="cardIndex !== column.cards.length - 1"-->
-                            <!--                                          @click.stop="moveCard(card, 'down')">&darr;</span>-->
-                            <!--                                </div>-->
+                            <div class="card__buttons">
+                                <div class="movement">
+                                    <div class="movement__direction movement__direction--up"
+                                         v-show="joystick && cardIndex !== 0"
+                                         @click.stop="moveCard(card, 'up')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="#465A5A" stroke-width="2.5"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="movement__direction movement__direction--left"
+                                         v-show="joystick && index !== 0"
+                                         @click.stop="moveCard(card, 'left')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="#465A5A" stroke-width="2.5"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="15 18 9 12 15 6"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="movement__direction"
+                                         :class="[joystick ? 'movement__direction--center' : 'movement__direction--topright']"
+                                         @click.stop="deleteCard(column, card)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="movement__direction movement__direction--right"
+                                         v-show="joystick && index !== lastIndex"
+                                         @click.stop="moveCard(card, 'right')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="#465A5A" stroke-width="2.5"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="movement__direction movement__direction--down"
+                                         v-show="joystick && cardIndex !== column.cards.length - 1"
+                                         @click.stop="moveCard(card, 'down')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="#465A5A" stroke-width="2.5"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <p class="card__description">{{ card.description }}</p>
@@ -90,6 +157,7 @@ export default {
             newColumn: {
                 title: '',
             },
+            joystick: false
         }
     },
 
