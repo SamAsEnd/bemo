@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::middleware('auth')->group(function () {
     Route::redirect('/', '/home');
@@ -23,5 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('columns', ColumnController::class, ['only' => ['index', 'store', 'destroy']]);
     Route::resource('columns.cards', CardController::class, ['only' => ['store', 'update', 'destroy']]);
 
-    Route::get('export-db', [ExportDbController::class, 'export'])->name('export-db');
+    Route::middleware('verified')
+        ->get('export-db', [ExportDbController::class, 'export'])->name('export-db');
 });

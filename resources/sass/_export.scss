@@ -1,0 +1,11 @@
+.export {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+
+  &__button {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,19 @@
+.button {
+  cursor: pointer;
+  padding: .8em 2em;
+  color: white;
+  background-color: $primary;
+  border: none;
+  border-radius: 6px;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  &:hover {
+    background-color: lighten($primary, 25%);
+    box-shadow: 0 0 2px white;
+  }
+}

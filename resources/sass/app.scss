@@ -1,11 +1,30 @@
-// Variables
-@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "reset";
 
-@import 'movement';
+@import "variables";
 
-.column_max {
-  max-width: 360px !important;
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #EEEEEE;
 }
+
+@import "navigation";
+
+@import "authentication";
+
+@import "input";
+
+@import "button";
+
+@import "alert";
+
+@import "export";
+
+@import "main";
+
+@import "columns";
+
+@import "cards";
+
+@import "model";

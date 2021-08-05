@@ -1,0 +1,21 @@
+.alert {
+  display: block;
+  padding: .8em 1.5em;
+  margin: 1em 0;
+  border-radius: 6px;
+
+  &--small {
+    padding: 0.1em 1em;
+    margin: 1em;
+  }
+
+  &--warning {
+    border: 1px solid #ad9048;
+    background-color: lighten(#ad9048, 30%);
+  }
+
+  &--success {
+    border: 1px solid #48ad55;
+    background-color: lighten(#48ad55, 30%);
+  }
+}

@@ -1,74 +1,72 @@
 <template>
-    <div class="container-fluid">
-        <div class="row justify-content-center mb-4">
-            <form @submit.prevent class="form-inline">
-                <div class="input-group">
-                    <input type="text" class="form-control" v-model="newColumn.title" @keyup.enter="addColumn">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button"
-                                @click.prevent="addColumn"
-                                :disabled="newColumn.title.trim().length === 0">
-                            &plus; Add a Column
-                        </button>
-                    </div>
+    <div class="main">
+        <div class="main__welcome">
+            <form @submit.prevent>
+                <div class="input">
+                    <input type="text" class="input__control input__control--large" v-model="newColumn.title"
+                           @keyup.enter="addColumn"
+                           placeholder="New Column Title">
                 </div>
             </form>
-        </div>
 
-        <div v-show="columns.length === 0" class="row justify-content-center mb-4">
-            <p class="alert alert-warning">
-                No column available.
+            <p v-cloak v-show="columns.length === 0" class="alert alert--warning">
+                No <strong>Column</strong> available.
             </p>
         </div>
 
-        <draggable tag="div" class="card-deck" v-model="columns" group="columns" @change="moveColumnDraggable">
-            <div class="card column_max sortable-list" v-for="(column, index) in columns" :key="column.id">
-                <div class="card-header">
-                    {{ column.title }}
+        <draggable tag="div" class="columns" v-model="columns" group="columns" @change="moveColumnDraggable">
+            <div class="column column_max" v-for="(column, index) in columns" :key="column.id">
+                <div class="column__title">
+                    <h3>{{ column.title }}</h3>
 
-                    <div class="float-right">
-                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>
-                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex"
-                              @click="moveColumn(column, 'right')">&rarr;</span>
-                        <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>
+                    <!--                    <div class="float-right">-->
+                    <!--                        <span class="btn btn-sm btn-light" v-show="index !== 0" @click="moveColumn(column, 'left')">&larr;</span>-->
+                    <!--                        <span class="btn btn-sm btn-light" v-show="index !== lastIndex"-->
+                    <!--                              @click="moveColumn(column, 'right')">&rarr;</span>-->
+                    <!--                        <span class="btn btn-sm btn-danger" @click="deleteColumn(column)">&times;</span>-->
+                    <!--                    </div>-->
+                    <div class="column__buttons">
+                        <span @click="addCard(column)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="lightgreen" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </span>
+                        <span @click="deleteColumn(column)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff4040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </span>
                     </div>
                 </div>
 
-                <div class="card-body">
-                    <p slot="header" v-show="column.cards.length === 0" class="alert alert-warning">
-                        No cards available.
-                    </p>
+                <small v-show="column.cards.length === 0" class="alert alert--warning alert--small">
+                    No cards available.
+                </small>
 
-                    <draggable tag="div" class="list-group" v-model="column.cards" group="cards"
-                               @change="moveCardDraggable(column, $event)">
-                        <div v-for="(card, cardIndex) in column.cards" :key="card.id"
-                             class="list-group-item list-group-item-action flex-column align-items-start"
-                             @click="showCard(card)">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{ card.title }}</h5>
+                <draggable tag="div" class="cards" v-model="column.cards" group="cards"
+                           @change="moveCardDraggable(column, $event)">
+                    <div v-for="(card, cardIndex) in column.cards" :key="card.id"
+                         class="card" @click="showCard(card)">
+                        <div class="card__title">
+                            <h4>{{ card.title }}</h4>
 
-                                <div class="movement float-right">
-                                    <span class="movement__direction movement__direction--up" v-show="cardIndex !== 0"
-                                          @click.stop="moveCard(card, 'up')">&uarr;</span>
-                                    <span class="movement__direction movement__direction--left" v-show="index !== 0"
-                                          @click.stop="moveCard(card, 'left')">&larr;</span>
-                                    <span class="movement__direction movement__direction--center"
-                                          @click.stop="deleteCard(column, card)">&times;</span>
-                                    <span class="movement__direction movement__direction--right" v-show="index !== lastIndex"
-                                          @click.stop="moveCard(card, 'right')">&rarr;</span>
-                                    <span class="movement__direction movement__direction--down" v-show="cardIndex !== column.cards.length - 1"
-                                          @click.stop="moveCard(card, 'down')">&darr;</span>
-                                </div>
-                            </div>
-
-                            <p class="mb-1">{{ card.description }}</p>
+                            <!--                                <div class="movement float-right">-->
+                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;up" v-show="cardIndex !== 0"-->
+                            <!--                                          @click.stop="moveCard(card, 'up')">&uarr;</span>-->
+                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;left" v-show="index !== 0"-->
+                            <!--                                          @click.stop="moveCard(card, 'left')">&larr;</span>-->
+                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;center"-->
+                            <!--                                          @click.stop="deleteCard(column, card)">&times;</span>-->
+                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;right" v-show="index !== lastIndex"-->
+                            <!--                                          @click.stop="moveCard(card, 'right')">&rarr;</span>-->
+                            <!--                                    <span class="movement__direction movement__direction&#45;&#45;down" v-show="cardIndex !== column.cards.length - 1"-->
+                            <!--                                          @click.stop="moveCard(card, 'down')">&darr;</span>-->
+                            <!--                                </div>-->
                         </div>
-                    </draggable>
-                </div>
 
-                <div class="card-footer">
-                    <button class="btn btn-sm btn-info" @click="addCard(column)">&plus; Add Card</button>
-                </div>
+                        <p class="card__description">{{ card.description }}</p>
+                    </div>
+                </draggable>
             </div>
         </draggable>
     </div>
@@ -224,7 +222,7 @@ export default {
 
         addCard(column) {
             this.$modal.show(
-                AddCard, {column}, {}, {'added': this.cardAdded}
+                AddCard, {column}, {width: 360}, {'added': this.cardAdded}
             );
         },
 
@@ -235,7 +233,7 @@ export default {
 
         showCard(card) {
             this.$modal.show(
-                UpdateCard, {_card:card}, {}, {}
+                UpdateCard, {_card: card}, {width: 360}, {}
             );
         }
     }

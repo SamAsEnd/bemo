@@ -1,16 +1,16 @@
 <template>
-    <form class="m-4">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input id="title" type="text" class="form-control" v-model="card.title">
+    <form class="modal">
+        <div class="input">
+            <label for="title" class="input__label">Title</label>
+            <input id="title" type="text" class="input__control" v-model="card.title">
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" class="form-control" v-model="card.description"></textarea>
+        <div class="input">
+            <label for="description" class="input__label">Description</label>
+            <textarea id="description" class="input__control" v-model="card.description"></textarea>
         </div>
-        <div class="form-group">
-            <button class="btn btn-outline-success" @click.prevent="updateCard">
-                &circlearrowleft; Update card
+        <div class="input">
+            <button class="button" @click.prevent="updateCard">
+                Update card
             </button>
         </div>
     </form>

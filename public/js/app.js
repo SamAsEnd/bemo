@@ -1865,6 +1865,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['column'],
@@ -1909,8 +1911,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _AddCardComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddCardComponent */ "./resources/js/components/AddCardComponent.vue");
 /* harmony import */ var _UpdateCardComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UpdateCardComponent */ "./resources/js/components/UpdateCardComponent.vue");
-//
-//
 //
 //
 //
@@ -2144,7 +2144,9 @@ __webpack_require__.r(__webpack_exports__);
     addCard: function addCard(column) {
       this.$modal.show(_AddCardComponent__WEBPACK_IMPORTED_MODULE_2__.default, {
         column: column
-      }, {}, {
+      }, {
+        width: 360
+      }, {
         'added': this.cardAdded
       });
     },
@@ -2155,7 +2157,9 @@ __webpack_require__.r(__webpack_exports__);
     showCard: function showCard(card) {
       this.$modal.show(_UpdateCardComponent__WEBPACK_IMPORTED_MODULE_3__.default, {
         _card: card
-      }, {}, {});
+      }, {
+        width: 360
+      }, {});
     }
   }
 });
@@ -41652,9 +41656,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { staticClass: "m-4" }, [
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
+  return _c("form", { staticClass: "modal" }, [
+    _c("div", { staticClass: "input" }, [
+      _c("label", { staticClass: "input__label", attrs: { for: "title" } }, [
+        _vm._v("Title")
+      ]),
       _vm._v(" "),
       _c("input", {
         directives: [
@@ -41665,7 +41671,7 @@ var render = function() {
             expression: "card.title"
           }
         ],
-        staticClass: "form-control",
+        staticClass: "input__control",
         attrs: { id: "title", type: "text" },
         domProps: { value: _vm.card.title },
         on: {
@@ -41679,8 +41685,12 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "description" } }, [_vm._v("Description")]),
+    _c("div", { staticClass: "input" }, [
+      _c(
+        "label",
+        { staticClass: "input__label", attrs: { for: "description" } },
+        [_vm._v("Description")]
+      ),
       _vm._v(" "),
       _c("textarea", {
         directives: [
@@ -41691,7 +41701,7 @@ var render = function() {
             expression: "card.description"
           }
         ],
-        staticClass: "form-control",
+        staticClass: "input__control",
         attrs: { id: "description" },
         domProps: { value: _vm.card.description },
         on: {
@@ -41705,11 +41715,11 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
+    _c("div", { staticClass: "input" }, [
       _c(
         "button",
         {
-          staticClass: "btn btn-outline-primary",
+          staticClass: "button",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -41747,13 +41757,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid" },
+    { staticClass: "main" },
     [
-      _c("div", { staticClass: "row justify-content-center mb-4" }, [
+      _c("div", { staticClass: "main__welcome" }, [
         _c(
           "form",
           {
-            staticClass: "form-inline",
             on: {
               submit: function($event) {
                 $event.preventDefault()
@@ -41761,7 +41770,7 @@ var render = function() {
             }
           },
           [
-            _c("div", { staticClass: "input-group" }, [
+            _c("div", { staticClass: "input" }, [
               _c("input", {
                 directives: [
                   {
@@ -41771,8 +41780,8 @@ var render = function() {
                     expression: "newColumn.title"
                   }
                 ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
+                staticClass: "input__control input__control--large",
+                attrs: { type: "text", placeholder: "New Column Title" },
                 domProps: { value: _vm.newColumn.title },
                 on: {
                   keyup: function($event) {
@@ -41791,60 +41800,36 @@ var render = function() {
                     _vm.$set(_vm.newColumn, "title", $event.target.value)
                   }
                 }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group-append" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: {
-                      type: "button",
-                      disabled: _vm.newColumn.title.trim().length === 0
-                    },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.addColumn.apply(null, arguments)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        + Add a Column\n                    "
-                    )
-                  ]
-                )
-              ])
+              })
             ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.columns.length === 0,
+                expression: "columns.length === 0"
+              }
+            ],
+            staticClass: "alert alert--warning"
+          },
+          [
+            _vm._v("\n            No "),
+            _c("strong", [_vm._v("Column")]),
+            _vm._v(" available.\n        ")
           ]
         )
       ]),
       _vm._v(" "),
       _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.columns.length === 0,
-              expression: "columns.length === 0"
-            }
-          ],
-          staticClass: "row justify-content-center mb-4"
-        },
-        [
-          _c("p", { staticClass: "alert alert-warning" }, [
-            _vm._v("\n            No column available.\n        ")
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
         "draggable",
         {
-          staticClass: "card-deck",
+          staticClass: "columns",
           attrs: { tag: "div", group: "columns" },
           on: { change: _vm.moveColumnDraggable },
           model: {
@@ -41858,286 +41843,155 @@ var render = function() {
         _vm._l(_vm.columns, function(column, index) {
           return _c(
             "div",
-            { key: column.id, staticClass: "card column_max sortable-list" },
+            { key: column.id, staticClass: "column column_max" },
             [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(column.title) +
-                    "\n\n                "
-                ),
-                _c("div", { staticClass: "float-right" }, [
+              _c("div", { staticClass: "column__title" }, [
+                _c("h3", [_vm._v(_vm._s(column.title))]),
+                _vm._v(" "),
+                _c("div", { staticClass: "column__buttons" }, [
                   _c(
                     "span",
                     {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: index !== 0,
-                          expression: "index !== 0"
-                        }
-                      ],
-                      staticClass: "btn btn-sm btn-light",
                       on: {
                         click: function($event) {
-                          return _vm.moveColumn(column, "left")
+                          return _vm.addCard(column)
                         }
                       }
                     },
-                    [_vm._v("←")]
+                    [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            width: "24",
+                            height: "24",
+                            viewBox: "0 0 24 24",
+                            fill: "none",
+                            stroke: "lightgreen",
+                            "stroke-width": "2",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round"
+                          }
+                        },
+                        [
+                          _c("circle", {
+                            attrs: { cx: "12", cy: "12", r: "10" }
+                          }),
+                          _c("line", {
+                            attrs: { x1: "12", y1: "8", x2: "12", y2: "16" }
+                          }),
+                          _c("line", {
+                            attrs: { x1: "8", y1: "12", x2: "16", y2: "12" }
+                          })
+                        ]
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
                     "span",
                     {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: index !== _vm.lastIndex,
-                          expression: "index !== lastIndex"
-                        }
-                      ],
-                      staticClass: "btn btn-sm btn-light",
-                      on: {
-                        click: function($event) {
-                          return _vm.moveColumn(column, "right")
-                        }
-                      }
-                    },
-                    [_vm._v("→")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      staticClass: "btn btn-sm btn-danger",
                       on: {
                         click: function($event) {
                           return _vm.deleteColumn(column)
                         }
                       }
                     },
-                    [_vm._v("×")]
+                    [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            width: "24",
+                            height: "24",
+                            viewBox: "0 0 24 24",
+                            fill: "none",
+                            stroke: "#ff4040",
+                            "stroke-width": "2",
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round"
+                          }
+                        },
+                        [
+                          _c("circle", {
+                            attrs: { cx: "12", cy: "12", r: "10" }
+                          }),
+                          _c("line", {
+                            attrs: { x1: "15", y1: "9", x2: "9", y2: "15" }
+                          }),
+                          _c("line", {
+                            attrs: { x1: "9", y1: "9", x2: "15", y2: "15" }
+                          })
+                        ]
+                      )
+                    ]
                   )
                 ])
               ]),
               _vm._v(" "),
               _c(
-                "div",
-                { staticClass: "card-body" },
-                [
-                  _c(
-                    "p",
+                "small",
+                {
+                  directives: [
                     {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: column.cards.length === 0,
-                          expression: "column.cards.length === 0"
-                        }
-                      ],
-                      staticClass: "alert alert-warning",
-                      attrs: { slot: "header" },
-                      slot: "header"
-                    },
-                    [
-                      _vm._v(
-                        "\n                    No cards available.\n                "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "draggable",
-                    {
-                      staticClass: "list-group",
-                      attrs: { tag: "div", group: "cards" },
-                      on: {
-                        change: function($event) {
-                          return _vm.moveCardDraggable(column, $event)
-                        }
-                      },
-                      model: {
-                        value: column.cards,
-                        callback: function($$v) {
-                          _vm.$set(column, "cards", $$v)
-                        },
-                        expression: "column.cards"
-                      }
-                    },
-                    _vm._l(column.cards, function(card, cardIndex) {
-                      return _c(
-                        "div",
-                        {
-                          key: card.id,
-                          staticClass:
-                            "list-group-item list-group-item-action flex-column align-items-start",
-                          on: {
-                            click: function($event) {
-                              return _vm.showCard(card)
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "d-flex w-100 justify-content-between"
-                            },
-                            [
-                              _c("h5", { staticClass: "mb-1" }, [
-                                _vm._v(_vm._s(card.title))
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "movement float-right" },
-                                [
-                                  _c(
-                                    "span",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: cardIndex !== 0,
-                                          expression: "cardIndex !== 0"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "movement__direction movement__direction--up",
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          return _vm.moveCard(card, "up")
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("↑")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: index !== 0,
-                                          expression: "index !== 0"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "movement__direction movement__direction--left",
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          return _vm.moveCard(card, "left")
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("←")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "movement__direction movement__direction--center",
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          return _vm.deleteCard(column, card)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("×")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: index !== _vm.lastIndex,
-                                          expression: "index !== lastIndex"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "movement__direction movement__direction--right",
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          return _vm.moveCard(card, "right")
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("→")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value:
-                                            cardIndex !==
-                                            column.cards.length - 1,
-                                          expression:
-                                            "cardIndex !== column.cards.length - 1"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "movement__direction movement__direction--down",
-                                      on: {
-                                        click: function($event) {
-                                          $event.stopPropagation()
-                                          return _vm.moveCard(card, "down")
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("↓")]
-                                  )
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "mb-1" }, [
-                            _vm._v(_vm._s(card.description))
-                          ])
-                        ]
-                      )
-                    }),
-                    0
-                  )
-                ],
-                1
+                      name: "show",
+                      rawName: "v-show",
+                      value: column.cards.length === 0,
+                      expression: "column.cards.length === 0"
+                    }
+                  ],
+                  staticClass: "alert alert--warning alert--small"
+                },
+                [_vm._v("\n                No cards available.\n            ")]
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "card-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info",
-                    on: {
-                      click: function($event) {
-                        return _vm.addCard(column)
-                      }
+              _c(
+                "draggable",
+                {
+                  staticClass: "cards",
+                  attrs: { tag: "div", group: "cards" },
+                  on: {
+                    change: function($event) {
+                      return _vm.moveCardDraggable(column, $event)
                     }
                   },
-                  [_vm._v("+ Add Card")]
-                )
-              ])
-            ]
+                  model: {
+                    value: column.cards,
+                    callback: function($$v) {
+                      _vm.$set(column, "cards", $$v)
+                    },
+                    expression: "column.cards"
+                  }
+                },
+                _vm._l(column.cards, function(card, cardIndex) {
+                  return _c(
+                    "div",
+                    {
+                      key: card.id,
+                      staticClass: "card",
+                      on: {
+                        click: function($event) {
+                          return _vm.showCard(card)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "card__title" }, [
+                        _c("h4", [_vm._v(_vm._s(card.title))])
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "card__description" }, [
+                        _vm._v(_vm._s(card.description))
+                      ])
+                    ]
+                  )
+                }),
+                0
+              )
+            ],
+            1
           )
         }),
         0
@@ -42169,9 +42023,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", { staticClass: "m-4" }, [
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
+  return _c("form", { staticClass: "modal" }, [
+    _c("div", { staticClass: "input" }, [
+      _c("label", { staticClass: "input__label", attrs: { for: "title" } }, [
+        _vm._v("Title")
+      ]),
       _vm._v(" "),
       _c("input", {
         directives: [
@@ -42182,7 +42038,7 @@ var render = function() {
             expression: "card.title"
           }
         ],
-        staticClass: "form-control",
+        staticClass: "input__control",
         attrs: { id: "title", type: "text" },
         domProps: { value: _vm.card.title },
         on: {
@@ -42196,8 +42052,12 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "description" } }, [_vm._v("Description")]),
+    _c("div", { staticClass: "input" }, [
+      _c(
+        "label",
+        { staticClass: "input__label", attrs: { for: "description" } },
+        [_vm._v("Description")]
+      ),
       _vm._v(" "),
       _c("textarea", {
         directives: [
@@ -42208,7 +42068,7 @@ var render = function() {
             expression: "card.description"
           }
         ],
-        staticClass: "form-control",
+        staticClass: "input__control",
         attrs: { id: "description" },
         domProps: { value: _vm.card.description },
         on: {
@@ -42222,11 +42082,11 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
+    _c("div", { staticClass: "input" }, [
       _c(
         "button",
         {
-          staticClass: "btn btn-outline-success",
+          staticClass: "button",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -42234,7 +42094,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n            ↺ Update card\n        ")]
+        [_vm._v("\n            Update card\n        ")]
       )
     ])
   ])
