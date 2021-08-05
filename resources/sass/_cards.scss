@@ -7,6 +7,12 @@
     margin: .25em 0.1em;
     border: 1px solid $primary;
     background-color: white;
+    transition: transform .2s;
+
+    &:hover {
+      transform: rotate(1deg) scale(1.05);
+      z-index: 999;
+    }
 
     &:first-child {
       border-top-left-radius: 7px;
