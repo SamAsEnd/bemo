@@ -157,7 +157,7 @@ export default {
             newColumn: {
                 title: '',
             },
-            joystick: JSON.parse(localStorage.getItem('joystick') || "false")
+            joystick: JSON.parse(localStorage.getItem('joystick') || "true")
         }
     },
 
