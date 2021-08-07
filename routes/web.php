@@ -23,6 +23,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('columns', ColumnController::class, ['only' => ['index', 'store', 'destroy']]);
     Route::resource('columns.cards', CardController::class, ['only' => ['store', 'update', 'destroy']]);
 
-    Route::middleware('verified')
-        ->get('export-db', [ExportDbController::class, 'export'])->name('export-db');
+    Route::get('export-db', [ExportDbController::class, 'export'])->name('export-db');
 });
